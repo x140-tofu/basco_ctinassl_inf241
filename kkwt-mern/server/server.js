@@ -7,12 +7,13 @@ import patternRoutes from "./routes/patternRoutes.js";
 import Pattern from "./models/Pattern.js";
 import Order from "./models/Order.js";
 import Cart from "./models/Cart.js";
+import User from "./models/User.js";
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit: "5mb" }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/patterns", patternRoutes);
@@ -61,6 +62,60 @@ app.put("/api/users/:id/cart", async (req, res) => {
     res.json(updatedCart.items);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+// Get user profile by ID
+app.get("/api/users/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update user profile (Crocheter Information + Avatar)
+app.put("/api/users/:id", async (req, res) => {
+  try {
+    const {
+      displayName,
+      username,
+      age,
+      email,
+      address,
+      mobileNumber,
+      profileImage,
+    } = req.body;
+
+    // Prevent duplicate username or email from another account
+    const duplicate = await User.findOne({
+      _id: { $ne: req.params.id },
+      $or: [{ username }, { email }],
+    });
+    if (duplicate) {
+      return res.status(400).json({ message: "Username or email is already taken." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        displayName,
+        username,
+        age,
+        email,
+        address,
+        mobileNumber,
+        profileImage,
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
