@@ -1008,3 +1008,149 @@ h1, h2, .serif-title {
     margin: 0 auto;
   }
 }
+
+/* ================= PROFILE PAGE ================= */
+.profile-page-wrapper {
+  min-height: 100vh;
+  background: #fdf9fa;
+}
+
+.logout-icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #723d4e;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.profile-container {
+  max-width: 1120px;
+  margin: 1.5rem auto 3rem;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.profile-avatar-circle {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: #bcbcbc;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-action-btn {
+  width: 185px;
+  text-align: center;
+}
+
+.btn-gray {
+  background: #dcdcdc;
+  color: #2b181e;
+}
+
+.profile-card {
+  background: #ffffff;
+  border-radius: 36px;
+  padding: 2.3rem 2.8rem 2rem;
+  box-shadow: 0 12px 35px rgba(114, 61, 78, 0.1);
+}
+
+.profile-card h2 {
+  color: #723d4e;
+  font-size: 1.75rem;
+  margin-bottom: 1.2rem;
+}
+
+.profile-card .form-group {
+  margin-bottom: 0.9rem;
+}
+
+.profile-card .form-group label {
+  display: block;
+  color: #723d4e;
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-bottom: 0.35rem;
+}
+
+.profile-card .form-group input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1.5px solid #d5c5ca;
+  padding: 0.62rem 1.15rem;
+  font-size: 0.92rem;
+  color: #5b313f;
+  outline: none;
+}
+
+.profile-card .form-group input:focus {
+  border-color: #723d4e;
+}
+
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.save-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.save-profile-btn {
+  min-width: 115px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.required-note {
+  text-align: right;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: #723d4e;
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 860px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.navbar-page-title {
+  color: #723d4e;
+  font-size: 3.1rem;
+  font-weight: 700;
+  margin: 0;
+  padding-left: 1.2rem;
+  border-left: 2px solid #e2cfd5;
+  line-height: 1.2;
+}

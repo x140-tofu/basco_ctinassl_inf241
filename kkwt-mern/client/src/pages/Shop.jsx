@@ -114,9 +114,9 @@ export default function Shop({ user, setUser, cart, setCart, isAdminMode = false
           <a href="#blog">Blog</a>
 
           {user ? (
-            <button onClick={handleLogout} className="pill-btn btn-plum">
-              {user.username}
-            </button>
+            <Link to="/profile" className="pill-btn btn-plum">
+              {user.displayName || user.username}
+            </Link>
           ) : (
             <Link to="/signup" className="pill-btn btn-plum">
               Sign Up

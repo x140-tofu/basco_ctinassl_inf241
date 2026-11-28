@@ -16,7 +16,6 @@ export default function Profile({ user, setUser }) {
     profileImage: user?.profileImage || "",
   });
 
-  // Auto-fill from user prop & fetch latest saved profile from MongoDB on load/refresh
   useEffect(() => {
     const userId = user?._id || user?.id;
     if (!userId) {
@@ -24,7 +23,6 @@ export default function Profile({ user, setUser }) {
       return;
     }
 
-    // Populate immediately from logged-in user state
     setForm((prev) => ({
       ...prev,
       displayName: user.displayName || prev.displayName,
@@ -36,7 +34,6 @@ export default function Profile({ user, setUser }) {
       profileImage: user.profileImage || prev.profileImage,
     }));
 
-    // Sync latest saved fields from MongoDB
     axios
       .get(`http://localhost:5000/api/users/${userId}`)
       .then((res) => {
@@ -54,7 +51,6 @@ export default function Profile({ user, setUser }) {
       .catch((err) => console.error("Error fetching profile:", err));
   }, [user?._id, user?.id]);
 
-  // Handle image upload (converts to Base64 so it saves directly in MongoDB)
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -70,7 +66,6 @@ export default function Profile({ user, setUser }) {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Save updated profile to MongoDB + sync localStorage & global user state
   const handleSave = async (e) => {
     e.preventDefault();
     const userId = user?._id || user?.id;
@@ -79,11 +74,8 @@ export default function Profile({ user, setUser }) {
     try {
       const res = await axios.put(`http://localhost:5000/api/users/${userId}`, form);
       const updatedUser = res.data;
-
-      // Update global user state & localStorage so changed username/email persists everywhere
       setUser(updatedUser);
       localStorage.setItem("kkwt_user", JSON.stringify(updatedUser));
-
       alert("Crocheter Information saved to MongoDB!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to save profile.");
@@ -100,8 +92,35 @@ export default function Profile({ user, setUser }) {
 
   return (
     <div className="profile-page-wrapper">
-      {/* Keep your existing header/navbar markup here, wiring Logout to handleLogout */}
+      {/* TOP BAR */}
+      <header className="shop-navbar">
+        <div className="shop-nav-left">
+          <Link to="/" className="brand-logo">
+            <img src="/images/logo.png" alt="KKWT Logo" className="logo-img" />
+            <span>KKWT</span>
+          </Link>
 
+          <h1 className="navbar-page-title">Account Profile</h1>
+        </div>
+
+        <nav className="nav-links">
+          <NavLink to="/" end>Home</NavLink>
+          <a href="#about">About</a>
+          <NavLink to="/shop">Shop</NavLink>
+          <a href="#blog">Blog</a>
+
+          <button type="button" onClick={handleLogout} className="logout-icon-btn" title="Logout">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#723d4e" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Logout</span>
+          </button>
+        </nav>
+      </header>
+
+      {/* MAIN CONTENT */}
       <main className="profile-container">
         {/* LEFT: AVATAR UPLOAD / REMOVE */}
         <div className="profile-avatar-section">
@@ -109,8 +128,7 @@ export default function Profile({ user, setUser }) {
             {form.profileImage ? (
               <img src={form.profileImage} alt="Profile" className="profile-avatar-img" />
             ) : (
-              /* Your default SVG silhouette */
-              <svg viewBox="0 0 24 24" fill="#e5e5e5">
+              <svg viewBox="0 0 24 24" fill="#e5e5e5" width="210" height="210">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
               </svg>
@@ -127,7 +145,7 @@ export default function Profile({ user, setUser }) {
 
           <button
             type="button"
-            className="pill-btn btn-plum"
+            className="pill-btn btn-plum profile-action-btn"
             onClick={() => fileInputRef.current?.click()}
           >
             Upload an Image
@@ -135,7 +153,7 @@ export default function Profile({ user, setUser }) {
 
           <button
             type="button"
-            className="pill-btn btn-gray"
+            className="pill-btn btn-gray profile-action-btn"
             onClick={handleRemoveImage}
           >
             Remove
@@ -214,10 +232,12 @@ export default function Profile({ user, setUser }) {
             </div>
 
             <div className="save-btn-wrap">
-              <button type="submit" className="pill-btn btn-plum">
+              <button type="submit" className="pill-btn btn-plum save-profile-btn">
                 SAVE
               </button>
             </div>
+
+            <p className="required-note">* Required Fields</p>
           </form>
         </div>
       </main>

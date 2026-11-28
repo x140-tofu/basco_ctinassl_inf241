@@ -34,9 +34,9 @@ export default function Navbar({ variant = "light", user, setUser, cartCount = 0
         <a href="#blog">Blog</a>
 
         {user ? (
-          <button onClick={handleLogout} className={`pill-btn ${isPlum ? "btn-white" : "btn-plum"}`}>
-            {user.username}
-          </button>
+          <Link to="/profile" className={`pill-btn ${isPlum ? "btn-white" : "btn-plum"}`}>
+            {user.displayName || user.username}
+          </Link>
         ) : (
           <Link to="/signup" className={`pill-btn ${isPlum ? "btn-white" : "btn-plum"}`}>
             Sign Up

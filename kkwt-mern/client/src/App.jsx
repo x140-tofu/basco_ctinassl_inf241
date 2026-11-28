@@ -6,6 +6,7 @@ import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 import "./App.css";
 
 export default function App() {
@@ -84,6 +85,7 @@ export default function App() {
         />
         <Route path="/signup" element={<SignUp setUser={setUser} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
       </Routes>
     </BrowserRouter>
   );
